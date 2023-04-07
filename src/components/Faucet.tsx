@@ -7,7 +7,7 @@ const SIMPLE_BUTTON = "mt-4 px-4 py-2 rounded-xl text-xl font-semibold bg-black 
 function Tx(props: { result: { txid: string, howMuchSats: number, toAddress: string } }) {
     const { txid, howMuchSats, toAddress } = props.result;
     return (
-        <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] max-w-[40rem] drop-shadow-blue-glow">
+        <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
             <Show when={txid} fallback={
                 <>
                     <p>You probably screwed this up didn't you?</p>
@@ -41,7 +41,7 @@ export function Faucet() {
                     <Tx result={sendResult.result!} />
                 </Match>
                 <Match when={true}>
-                    <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full max-w-[40rem] drop-shadow-blue-glow">
+                    <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
                         <label for="how_much">How much? (sats)</label>
                         <input type="number" name="how_much" placeholder="sats" value={amount()} onChange={(e) => setAmount(e.currentTarget.value)} />
                         <div class="flex gap-2 -mt-2 mb-2">
