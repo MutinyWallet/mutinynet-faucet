@@ -10,11 +10,23 @@ COPY package.json pnpm-lock.yaml ./
 # Install dependencies
 RUN npm install -g pnpm && pnpm install
 
+# Add the ARG directives for build-time environment variables
+ARG VITE_HOST
+ARG VITE_PORT
+ARG VITE_USER
+ARG VITE_PASS
+ARG VITE_NETWORK
+
 # Copy the rest of the application files into the container
 COPY . .
 
-# Build the application
-RUN pnpm build
+# Build the application with the environment variables
+RUN VITE_HOST=$VITE_HOST \
+    VITE_PORT=$VITE_PORT \
+    VITE_USER=$VITE_USER \
+    VITE_PASS=$VITE_PASS \
+    VITE_NETWORK=$VITE_NETWORK \
+    pnpm build
 
 # Expose the port the application will run on
 EXPOSE 3000
