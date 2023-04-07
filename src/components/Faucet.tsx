@@ -28,7 +28,7 @@ export function Faucet() {
         const howMuchSats = parseInt(formData.get("how_much")?.toString() ?? "1000000");
         const toAddress = formData.get("address")?.toString() ?? "tb1q...";
 
-        const txid = await sendToAddress(toAddress, howMuchSats / 100_000_000) as string;
+        const txid = await sendToAddress(toAddress, howMuchSats) as string;
         return { txid, howMuchSats, toAddress }
     });
 

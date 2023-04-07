@@ -1,7 +1,8 @@
+import Client from 'bitcoin-core';
+
 // As a "server action" this should only run on the server, shouldn't leak anything to the client
 export async function sendToAddress(address: string, amountSats: number) {
 
-    const Client = require('bitcoin-core');
 
     const HOST = import.meta.env.VITE_HOST;
     const PORT = import.meta.env.VITE_PORT;
