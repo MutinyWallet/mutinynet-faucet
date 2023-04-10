@@ -1,23 +1,32 @@
-import { Match, Show, Switch, createSignal } from "solid-js";
+import { Match, Switch, createSignal } from "solid-js";
+import { useSearchParams } from "solid-start";
 import { createServerAction$ } from "solid-start/server";
 import { sendToAddress } from "~/core";
 
 const SIMPLE_BUTTON = "mt-4 px-4 py-2 rounded-xl text-xl font-semibold bg-black text-white border border-white";
 
-function Tx(props: { result: { txid: string, howMuchSats: number, toAddress: string } }) {
-    const { txid, howMuchSats, toAddress } = props.result;
+function Tx(props) {
+    const { txid, howMuchSats, toAddress } = props.result?.result || {};
     return (
         <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
-            <Show when={txid} fallback={
-                <>
-                    <p>You probably screwed this up didn't you?</p>
+            <Switch>
+                <Match when={txid}>
+                    <p>Sent {howMuchSats} sats to</p>
+                    <pre class="text-sm font-mono">{toAddress}</pre>
+                    <a href={`https://mutinynet.com/tx/${txid}`} class="">View on mempool.space</a>
+                    <button class={SIMPLE_BUTTON} onClick={() => window.location.reload()}>Start Over</button>
+                </Match>
+                <Match when={props.result?.result?.error || ""}>
+                    <p>Something went wrong on the backend</p>
+                    <code>{props.result?.result?.error}</code>
                     <button class={SIMPLE_BUTTON} onClick={() => window.location.reload()}>Try again</button>
-                </>
-            }>
-                <p>Sent {howMuchSats} sats to</p>
-                <pre class="text-sm font-mono">{toAddress}</pre>
-                <a href={`https://mutinynet.com/tx/${txid}`} class="">View on mempool.space</a>
-            </Show>
+                </Match>
+                <Match when={true}>
+                    <p>You probably screwed this up didn't you?</p>
+                    <p>(Make sure you're using a signet address btw)</p>
+                    <button class={SIMPLE_BUTTON} onClick={() => window.location.reload()}>Try again</button>
+                </Match>
+            </Switch>
         </div>
     )
 }
@@ -33,12 +42,13 @@ export function Faucet() {
     });
 
     const [amount, setAmount] = createSignal("100000");
+    const [searchParams] = useSearchParams();
 
     return (
         <>
             <Switch>
                 <Match when={sendResult.result}>
-                    <Tx result={sendResult.result!} />
+                    <Tx result={sendResult} />
                 </Match>
                 <Match when={true}>
                     <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
@@ -50,8 +60,8 @@ export function Faucet() {
                             <button type="button" onClick={() => setAmount("100000")} class={SIMPLE_BUTTON}>100K</button>
                         </div>
                         <label for="address">Destination</label>
-                        <input type="text" name="address" placeholder="tb1q..." />
-                        <input type="submit" value="Make it rain" class="mt-4 p-4 rounded-xl text-xl font-semibold bg-[#1EA67F] text-white" />
+                        <input type="text" name="address" placeholder="tb1q..." value={searchParams.address || ""} />
+                        <input type="submit" disabled={sendResult.pending} value={sendResult.pending ? "..." : "Make it rain"} class="mt-4 p-4 rounded-xl text-xl font-semibold bg-[#1EA67F] text-white disabled:bg-gray-500" />
                     </Form>
                 </Match>
             </Switch>
