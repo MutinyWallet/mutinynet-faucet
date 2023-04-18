@@ -23,7 +23,7 @@ function Tx(props) {
                 </Match>
                 <Match when={true}>
                     <p>You probably screwed this up didn't you?</p>
-                    <p>(Make sure you're using a signet address btw)</p>
+                    <p>(Make sure you're using a signet address btw, and don't ask for more than 1BTC)</p>
                     <button class={SIMPLE_BUTTON} onClick={() => window.location.reload()}>Try again</button>
                 </Match>
             </Switch>
@@ -53,7 +53,7 @@ export function Faucet() {
                 <Match when={true}>
                     <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
                         <label for="how_much">How much? (sats)</label>
-                        <input type="number" name="how_much" placeholder="sats" value={amount()} onChange={(e) => setAmount(e.currentTarget.value)} max="10000000" />
+                        <input type="number" name="how_much" placeholder="sats" value={amount()} onInput={(e) => setAmount(e.currentTarget.value)} max="10000001" />
                         <div class="flex gap-2 -mt-2 mb-2">
                             <button type="button" onClick={() => setAmount("10000000")} class={SIMPLE_BUTTON}>10M</button>
                             <button type="button" onClick={() => setAmount("1000000")} class={SIMPLE_BUTTON}>1M</button>

@@ -7,20 +7,20 @@
   },
   "type": "module",
   "devDependencies": {
-    "autoprefixer": "^10.4.13",
-    "postcss": "^8.4.21",
-    "solid-start-node": "^0.2.19",
-    "tailwindcss": "^3.2.4",
-    "typescript": "^4.9.4",
-    "vite": "^4.1.4"
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.22",
+    "solid-start-node": "^0.2.26",
+    "tailwindcss": "^3.3.1",
+    "typescript": "^4.9.5",
+    "vite": "^4.2.2"
   },
   "dependencies": {
-    "@solidjs/meta": "^0.28.2",
+    "@solidjs/meta": "^0.28.4",
     "@solidjs/router": "^0.8.2",
     "bitcoin-core": "^4.1.0",
-    "solid-js": "^1.7.2",
+    "solid-js": "^1.7.3",
     "solid-start": "^0.2.26",
-    "undici": "^5.15.1"
+    "undici": "^5.21.2"
   },
   "engines": {
     "node": ">=16"
