@@ -26,7 +26,8 @@ a {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+textarea {
   @apply p-4 rounded-xl;
   @apply text-black;
   @apply placeholder-[#4E5B7E];

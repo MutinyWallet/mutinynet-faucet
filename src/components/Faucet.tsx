@@ -5,7 +5,7 @@ import { sendToAddress } from "~/core";
 
 const SIMPLE_BUTTON = "mt-4 px-4 py-2 rounded-xl text-xl font-semibold bg-black text-white border border-white";
 
-function Tx(props) {
+function Tx(props: any) {
     const { txid, howMuchSats, toAddress } = props.result?.result || {};
     return (
         <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
@@ -65,7 +65,6 @@ export function Faucet() {
                     </Form>
                 </Match>
             </Switch>
-
         </>
     );
 }
