@@ -1,3 +1,4 @@
+// @ts-expect-error
 import Client from 'bitcoin-core';
 
 // As a "server action" this should only run on the server, shouldn't leak anything to the client
