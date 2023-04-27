@@ -16,6 +16,9 @@ ARG VITE_PORT
 ARG VITE_USER
 ARG VITE_PASS
 ARG VITE_NETWORK
+ARG VITE_TLS_CERT
+ARG VITE_ADMIN_MACAROON
+ARG VITE_LND_GRPC
 
 # Copy the rest of the application files into the container
 COPY . .
@@ -26,6 +29,9 @@ RUN VITE_HOST=$VITE_HOST \
     VITE_USER=$VITE_USER \
     VITE_PASS=$VITE_PASS \
     VITE_NETWORK=$VITE_NETWORK \
+    VITE_TLS_CERT=$VITE_TLS_CERT \
+    VITE_ADMIN_MACAROON=$VITE_ADMIN_MACAROON \
+    VITE_LND_GRPC=$VITE_LND_GRPC \
     pnpm build
 
 # Expose the port the application will run on
