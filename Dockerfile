@@ -11,27 +11,13 @@ COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install
 
 # Add the ARG directives for build-time environment variables
-ARG VITE_HOST
-ARG VITE_PORT
-ARG VITE_USER
-ARG VITE_PASS
-ARG VITE_NETWORK
-ARG VITE_TLS_CERT
-ARG VITE_ADMIN_MACAROON
-ARG VITE_LND_GRPC
+ARG VITE_FAUCET_API
 
 # Copy the rest of the application files into the container
 COPY . .
 
 # Build the application with the environment variables
-RUN VITE_HOST=$VITE_HOST \
-    VITE_PORT=$VITE_PORT \
-    VITE_USER=$VITE_USER \
-    VITE_PASS=$VITE_PASS \
-    VITE_NETWORK=$VITE_NETWORK \
-    VITE_TLS_CERT=$VITE_TLS_CERT \
-    VITE_ADMIN_MACAROON=$VITE_ADMIN_MACAROON \
-    VITE_LND_GRPC=$VITE_LND_GRPC \
+RUN VITE_FAUCET_API=$VITE_FAUCET_API \
     pnpm build
 
 # Expose the port the application will run on
