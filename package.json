@@ -15,6 +15,7 @@
     "vite": "^4.2.2"
   },
   "dependencies": {
+    "@nostr-dev-kit/ndk": "^0.8.17",
     "@solidjs/meta": "^0.28.4",
     "@solidjs/router": "^0.8.2",
     "solid-js": "^1.7.3",
