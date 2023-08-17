@@ -1,5 +1,6 @@
 import { Faucet } from "~/components/Faucet";
 import { LnFaucet } from "~/components/LnFaucet";
+import { NWC } from "~/components/NWC";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       </h1>
       <Faucet />
       <LnFaucet />
+      <NWC />
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
         <h1 class="font-bold text-xl font-mono">Join the mutinynet</h1>
         <p>
