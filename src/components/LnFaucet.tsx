@@ -52,11 +52,19 @@ function Pop(props: any) {
 export function LnFaucet() {
   const [sendResult, { Form }] = createRouteAction(
     async (formData: FormData) => {
-      const bolt11 = formData.get("bolt11")?.toString();
+      let bolt11 = formData.get("bolt11")?.toString();
 
       if (!bolt11) {
         throw new Error("No bolt11 provided");
       } else {
+        // Strip surrounding quotation marks if they exist
+        bolt11 = bolt11.replace(/^"|"$/g, '').trim();
+
+        // Remove "lightning:" prefix if it exists
+        if (bolt11.startsWith("lightning:")) {
+          bolt11 = bolt11.substring(10);
+        }
+
         // const result = await payInvoice(bolt11);
         const res = await fetch(`${FAUCET_API_URL}/api/lightning`, {
           method: "POST",
