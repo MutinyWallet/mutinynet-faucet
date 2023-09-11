@@ -59,7 +59,9 @@ export function Faucet() {
       const howMuchSats = parseInt(
         formData.get("how_much")?.toString() ?? "1000000"
       );
-      const toAddress = formData.get("address")?.toString() ?? "tb1q...";
+      let toAddress = formData.get("address")?.toString() ?? "tb1q...";
+      // Strip surrounding quotation marks if they exist
+      toAddress = toAddress.replace(/^"|"$/g, '').trim();
 
       const res = await fetch(`${FAUCET_API_URL}/api/onchain`, {
         method: "POST",
