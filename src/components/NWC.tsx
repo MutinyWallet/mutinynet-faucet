@@ -60,6 +60,7 @@ async function publishZapRequest(bolt11: string, nwc: NWCInfo) {
 
   await event.encrypt(undefined, signer);
 
+  await event.sign();
   console.log("publishing zap request", event.rawEvent());
 
   event.publish();
