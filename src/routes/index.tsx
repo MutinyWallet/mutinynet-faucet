@@ -23,6 +23,12 @@ export default function Home() {
         </pre>
       </div>
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
+        <h1 class="font-bold text-xl font-mono">Infinite LNURL Withdrawal!</h1>
+        <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
+          lnurl1dp68gurn8ghj7enpw43k2apwd46hg6tw09hx2apwvdhk6tmpwp5j7mrww4excac7utxd6
+        </pre>
+      </div>
+      <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
         <h1 class="font-bold text-xl font-mono">Join the Federation</h1>
         <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
           fed11qgqzc2nhwden5te0vejkg6tdd9h8gepwvejkg6tdd9h8garhduhx6at5d9h8jmn9wshxxmmd9uqqzgxg6s3evnr6m9zdxr6hxkdkukexpcs3mn7mj3g5pc5dfh63l4tj6g9zk4er
