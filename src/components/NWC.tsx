@@ -37,33 +37,27 @@ async function parseNwcUrl(url: string): Promise<NWCInfo> {
 async function publishZapRequest(bolt11: string, nwc: NWCInfo) {
   console.log(bolt11);
   const signer = new NDKPrivateKeySigner(nwc.secret);
-  const user = await signer.user();
   const ndk = new NDK({ explicitRelayUrls: [nwc.relay], signer });
 
   console.log("connecting to ndk");
   await ndk.connect();
 
-  const nostEvent = {
-    created_at: new Date(2010, 6, 26).getTime() / 1000,
-    kind: 23194,
-    content: JSON.stringify({
-      method: "pay_invoice",
-      params: {
-        invoice: bolt11, // bolt11 invoice
-      },
-    }),
-    tags: [["p", nwc.npubHex]],
-    pubkey: user.hexpubkey(),
-  };
-
-  const event = new NDKEvent(ndk, nostEvent);
+  const event = new NDKEvent(ndk);
+  event.kind = 23194;
+  event.content = JSON.stringify({
+    method: "pay_invoice",
+    params: {
+      invoice: bolt11, // bolt11 invoice
+    },
+  });
+  event.tags = [["p", nwc.npubHex]];
 
   await event.encrypt(undefined, signer);
 
   await event.sign();
   console.log("publishing zap request", event.rawEvent());
 
-  event.publish();
+  await event.publish();
 
   // const zaps2: NostrEvent[] = [];
   // zaps.forEach((zap) => {
