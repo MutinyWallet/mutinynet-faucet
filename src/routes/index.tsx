@@ -23,6 +23,12 @@ export default function Home() {
         </pre>
       </div>
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
+        <h1 class="font-bold text-xl font-mono">Faucet Lightning Node</h1>
+        <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
+            02465ed5be53d04fde66c9418ff14a5f2267723810176c9212b722e542dc1afb1b@45.79.52.207:9735
+        </pre>
+      </div>
+      <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
         <h1 class="font-bold text-xl font-mono">Infinite LNURL Withdrawal!</h1>
         <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
           lnurl1dp68gurn8ghj7enpw43k2apwd46hg6tw09hx2apwvdhk6tmpwp5j7mrww4excac7utxd6
