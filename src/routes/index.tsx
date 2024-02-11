@@ -41,6 +41,12 @@ export default function Home() {
         </pre>
       </div>
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
+          <h1 class="font-bold text-xl font-mono">Cashu Mint</h1>
+          <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
+              https://cashu.mutinynet.com
+          </pre>
+      </div>
+      <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
         <h1 class="font-bold text-xl font-mono">Join the mutinynet</h1>
         <p>
           (add this to your <code>bitcoin.conf</code> file)
