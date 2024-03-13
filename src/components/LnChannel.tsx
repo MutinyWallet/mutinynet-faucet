@@ -56,9 +56,22 @@ export function LnChannel() {
   const [sendResult, { Form }] = createRouteAction(
     async (formData: FormData) => {
       const connectionString = formData.get("connectionString")?.toString();
-      const [pubkey, host] = connectionString?.split("@") || [];
 
-      if (!pubkey || !host) {
+      if (!connectionString) {
+        throw new Error("Invalid connection string");
+      }
+
+      let pubkey: string;
+      let host: string | undefined;
+      if (connectionString?.includes("@")) {
+        const [pk, h] = connectionString?.split("@") || [];
+        pubkey = pk;
+        host = h;
+      } else {
+        pubkey = connectionString;
+      }
+
+      if (!pubkey) {
         throw new Error("Invalid connection string");
       }
 
