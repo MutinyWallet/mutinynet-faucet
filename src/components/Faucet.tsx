@@ -74,7 +74,8 @@ export function Faucet() {
       if (!res.ok) {
         throw new Error(await res.text());
       } else {
-        return { txid: (await res.json()).txid, howMuchSats, toAddress };
+        let json = await res.json();
+        return { txid: json.txid, howMuchSats, toAddress: json.address };
       }
     }
   );
