@@ -68,6 +68,44 @@ async function publishZapRequest(bolt11: string, nwc: NWCInfo) {
   // return [];
 }
 
+
+type MultiInvoiceParam = {
+  id: string;
+  invoice: string;
+};
+
+async function publishMultiInvoiceRequest(invoices: string[], nwc: NWCInfo) {
+  const signer = new NDKPrivateKeySigner(nwc.secret);
+  const ndk = new NDK({ explicitRelayUrls: [nwc.relay], signer });
+
+  console.log("connecting to ndk");
+  await ndk.connect();
+
+  let invoicesParam: MultiInvoiceParam[] = [];
+
+  for (var invoice of invoices) {
+    let invoiceParam: MultiInvoiceParam = {id: invoice, invoice}
+    invoicesParam.push(invoiceParam)
+  }
+
+  const event = new NDKEvent(ndk);
+  event.kind = 23194;
+  event.content = JSON.stringify({
+    method: "multi_pay_invoice",
+    params: {
+      invoices: invoicesParam, 
+    },
+  });
+  event.tags = [["p", nwc.npubHex]];
+
+  await event.encrypt(undefined, signer);
+
+  await event.sign();
+  console.log("publishing zap request", event.rawEvent());
+
+  await event.publish();
+}
+
 async function fetchBolt11(): Promise<{ bolt11: string }> {
   const res = await fetch(`${FAUCET_API_URL}/api/bolt11`, {
     method: "POST",
@@ -100,6 +138,22 @@ function Zapper(props: { nwc: NWCInfo }) {
     setLoading(false);
   }
 
+  async function handleMultiZap() {
+    setLoading(true);
+    let invoices = [];
+    try {
+      // create 3 invoices for the multi invoice request
+      for (let i = 0; i < 3; i++) {
+        const bolt11 = (await fetchBolt11()).bolt11;
+        invoices.push(bolt11);
+      }
+      await publishMultiInvoiceRequest(invoices, props.nwc); 
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
+  }
+  
   return (
     <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
       <Switch>
@@ -114,6 +168,9 @@ function Zapper(props: { nwc: NWCInfo }) {
           </pre>
           <button class={GREEN_BUTTON} onClick={handleZap}>
             {loading() ? "..." : "Send Zap Request"}
+          </button>
+          <button class={GREEN_BUTTON} onClick={handleMultiZap}>
+            {loading() ? "..." : "Send Multiple Zap Requests"}
           </button>
         </Match>
       </Switch>
