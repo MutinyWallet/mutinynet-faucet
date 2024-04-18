@@ -68,6 +68,43 @@ async function publishZapRequest(bolt11: string, nwc: NWCInfo) {
   // return [];
 }
 
+
+type MultiInvoiceParam = {
+  id: string;
+  invoice: string;
+};
+
+async function publishMultiInvoiceRequest(invoices: string[], nwc: NWCInfo) {
+  const signer = new NDKPrivateKeySigner(nwc.secret);
+  const ndk = new NDK({ explicitRelayUrls: [nwc.relay], signer });
+
+  console.log("connecting to ndk");
+  await ndk.connect();
+
+  let invoicesParam: MultiInvoiceParam[] = [];
+
+  for (var invoice of invoices) {
+    let invoiceParam: MultiInvoiceParam = {id: invoice, invoice}
+    invoicesParam.push(invoiceParam)
+  }
+
+  const event = new NDKEvent(ndk);
+  event.kind = 23194;
+  event.content = JSON.stringify({
+    method: "multi_pay_invoice",
+    params: {
+      invoices: invoicesParam, 
+    },
+  });
+  event.tags = [["p", nwc.npubHex]];
+
+  await event.encrypt(undefined, signer);
+  await event.sign();
+  console.log("publishing multi zap request", event.rawEvent());
+  await event.publish();
+}
+
+
 async function fetchBolt11(): Promise<{ bolt11: string }> {
   const res = await fetch(`${FAUCET_API_URL}/api/bolt11`, {
     method: "POST",
@@ -100,6 +137,87 @@ function Zapper(props: { nwc: NWCInfo }) {
     setLoading(false);
   }
 
+  async function handleMultiZap() {
+    setLoading(true);
+    let invoices = [];
+    try {
+      // create 3 invoices for the multi invoice request
+      for (let i = 0; i < 3; i++) {
+        const bolt11 = (await fetchBolt11()).bolt11;
+        invoices.push(bolt11);
+      }
+      await publishMultiInvoiceRequest(invoices, props.nwc); 
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
+  }
+
+  async function handleKeysend() {
+    setLoading(true);
+
+    const signer = new NDKPrivateKeySigner(props.nwc.secret);
+    const ndk = new NDK({ explicitRelayUrls: [props.nwc.relay], signer });
+
+    console.log("connecting to ndk");
+    await ndk.connect();
+
+    const event = new NDKEvent(ndk);
+    event.kind = 23194;
+    event.content = JSON.stringify({
+      method: "pay_keysend",
+      params: {
+        amount: 42 * 1000,
+        pubkey: "02465ed5be53d04fde66c9418ff14a5f2267723810176c9212b722e542dc1afb1b"
+      },
+    });
+    event.tags = [["p", props.nwc.npubHex]];
+
+    await event.encrypt(undefined, signer);
+    await event.sign();
+    console.log("publishing keysend request", event.rawEvent());
+    await event.publish();
+
+    setLoading(false);
+  }
+
+  async function handleMultiKeysend() {
+    setLoading(true);
+
+    const signer = new NDKPrivateKeySigner(props.nwc.secret);
+    const ndk = new NDK({ explicitRelayUrls: [props.nwc.relay], signer });
+
+    console.log("connecting to ndk");
+    await ndk.connect();
+
+    let keysendParams = [];
+    for (let i = 0; i < 3; i++) {
+      let keysendParam = {
+        id: String(Math.floor(Math.random() * 10000000)), 
+        pubkey: "02465ed5be53d04fde66c9418ff14a5f2267723810176c9212b722e542dc1afb1b", 
+        amount: 42 * 1000
+      }
+      keysendParams.push(keysendParam)
+    }
+
+    const event = new NDKEvent(ndk);
+    event.kind = 23194;
+    event.content = JSON.stringify({
+      method: "multi_pay_keysend",
+      params: {
+        keysends: keysendParams
+      },
+    });
+    event.tags = [["p", props.nwc.npubHex]];
+
+    await event.encrypt(undefined, signer);
+    await event.sign();
+    console.log("publishing multi keysend request", event.rawEvent());
+    await event.publish();
+
+    setLoading(false);
+  }
+  
   return (
     <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
       <Switch>
@@ -114,6 +232,15 @@ function Zapper(props: { nwc: NWCInfo }) {
           </pre>
           <button class={GREEN_BUTTON} onClick={handleZap}>
             {loading() ? "..." : "Send Zap Request"}
+          </button>
+          <button class={GREEN_BUTTON} onClick={handleMultiZap}>
+            {loading() ? "..." : "Send Multiple Zap Requests"}
+          </button>
+          <button class={GREEN_BUTTON} onClick={handleKeysend}>
+            {loading() ? "..." : "Send Keysend Request"}
+          </button>
+          <button class={GREEN_BUTTON} onClick={handleMultiKeysend}>
+            {loading() ? "..." : "Send Multiple Keysend Requests"}
           </button>
         </Match>
       </Switch>
