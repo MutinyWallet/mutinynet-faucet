@@ -61,7 +61,7 @@ signetblocktime=30
         </pre>
         <p>
           For now you'll{" "}
-          <a href="https://github.com/bitcoin/bitcoin/pull/27446">
+          <a href="https://github.com/benthecarman/bitcoin/releases">
             need to run a fork of bitcoin core
           </a>{" "}
           to make it work.
