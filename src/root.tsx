@@ -1,8 +1,6 @@
 // @refresh reload
-import { Suspense } from "solid-js";
+import {Match, Show, Suspense, Switch} from "solid-js";
 import {
-  useLocation,
-  A,
   Body,
   ErrorBoundary,
   FileRoutes,
@@ -15,6 +13,8 @@ import {
   Link,
 } from "solid-start";
 import "./root.css";
+import { AuthButton } from "./components/AuthButton";
+import {token} from "~/stores/auth";
 
 export default function Root() {
   return (
@@ -24,6 +24,9 @@ export default function Root() {
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
         <Link rel="icon" href="/favicon.svg" />
+        <Show when={token()}>
+            <AuthButton />
+        </Show>
       </Head>
       <Body>
         <Suspense>

@@ -1,5 +1,6 @@
 import { createSignal, Match, Switch } from "solid-js";
 import { createRouteAction } from "solid-start";
+import { token } from "~/stores/auth";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
@@ -99,6 +100,7 @@ export function LnChannel() {
         }),
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token()}`,
         },
       });
 

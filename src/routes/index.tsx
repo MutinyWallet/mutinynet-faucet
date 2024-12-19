@@ -2,6 +2,24 @@ import { Faucet } from "~/components/Faucet";
 import { LnChannel } from "~/components/LnChannel";
 import { LnFaucet } from "~/components/LnFaucet";
 import { NWC } from "~/components/NWC";
+import {Match, onMount, Show, Switch} from "solid-js";
+import {setToken, token} from "~/stores/auth";
+import {AuthButton} from "~/components/AuthButton";
+
+onMount(() => {
+    // Handle auth callback
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+        // Store token in localStorage and state
+        localStorage.setItem("token", token);
+        setToken(token);
+
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
 
 export default function Home() {
   return (
@@ -9,10 +27,17 @@ export default function Home() {
       <h1 class="font-mono text-4xl drop-shadow-text-glow p-8 font-bold">
         mutinynet
       </h1>
-      <Faucet />
-      <LnFaucet />
-      <LnChannel />
-      <NWC />
+        <Switch>
+            <Match when={token()}>
+                <Faucet />
+                <LnFaucet />
+                <LnChannel />
+                <NWC />
+            </Match>
+            <Match when={true}>
+                <AuthButton />
+            </Match>
+        </Switch>
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
         <h1 class="font-bold text-xl font-mono">Send back your unused sats</h1>
         <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
@@ -28,12 +53,14 @@ export default function Home() {
             02465ed5be53d04fde66c9418ff14a5f2267723810176c9212b722e542dc1afb1b@45.79.52.207:9735
         </pre>
       </div>
-      <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
-        <h1 class="font-bold text-xl font-mono">Infinite LNURL Withdrawal!</h1>
-        <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
-          lnurl1dp68gurn8ghj7enpw43k2apwd46hg6tw09hx2apwvdhk6tmpwp5j7mrww4excac7utxd6
-        </pre>
-      </div>
+      <Show when={token()}>
+          <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
+            <h1 class="font-bold text-xl font-mono">Infinite LNURL Withdrawal!</h1>
+            <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
+              lnurl1dp68gurn8ghj7enpw43k2apwd46hg6tw09hx2apwvdhk6tmpwp5j7mrww4excac7utxd6
+            </pre>
+          </div>
+      </Show>
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
         <h1 class="font-bold text-xl font-mono">Join the Federation</h1>
         <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">

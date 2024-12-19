@@ -1,3 +1,4 @@
+import { token } from "~/stores/auth";
 import { Match, Switch } from "solid-js";
 import { createRouteAction } from "solid-start";
 
@@ -71,6 +72,7 @@ export function LnFaucet() {
           body: JSON.stringify({ bolt11 }),
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token()}`,
           },
         });
 

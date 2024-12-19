@@ -1,5 +1,6 @@
 import { Match, Switch, createSignal } from "solid-js";
 import { createRouteAction } from "solid-start";
+import { token } from "~/stores/auth";
 
 import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
 
@@ -111,6 +112,7 @@ async function fetchBolt11(): Promise<{ bolt11: string }> {
     body: JSON.stringify({ amount_sats: 21 }),
     headers: {
       "Content-Type": "application/json",
+      "Authorization": `Bearer ${token()}`,
     },
   });
 

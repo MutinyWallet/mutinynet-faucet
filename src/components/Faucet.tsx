@@ -1,5 +1,6 @@
 import { Match, Switch, createSignal } from "solid-js";
 import { createRouteAction, useSearchParams } from "solid-start";
+import { token } from "~/stores/auth";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
@@ -68,6 +69,7 @@ export function Faucet() {
         body: JSON.stringify({ sats: howMuchSats, address: toAddress }),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token()}`,
         },
       });
 
