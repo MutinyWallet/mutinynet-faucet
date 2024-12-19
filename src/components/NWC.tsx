@@ -1,8 +1,8 @@
 import { Match, Switch, createSignal } from "solid-js";
 import { createRouteAction } from "solid-start";
-import { token } from "~/stores/auth";
 
 import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
+import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
@@ -94,7 +94,7 @@ async function publishMultiInvoiceRequest(invoices: string[], nwc: NWCInfo) {
   event.content = JSON.stringify({
     method: "multi_pay_invoice",
     params: {
-      invoices: invoicesParam, 
+      invoices: invoicesParam,
     },
   });
   event.tags = [["p", nwc.npubHex]];
@@ -107,13 +107,8 @@ async function publishMultiInvoiceRequest(invoices: string[], nwc: NWCInfo) {
 
 
 async function fetchBolt11(): Promise<{ bolt11: string }> {
-  const res = await fetch(`${FAUCET_API_URL}/api/bolt11`, {
-    method: "POST",
-    body: JSON.stringify({ amount_sats: 21 }),
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token()}`,
-    },
+  const res = await api.post("api/bolt11", {
+    amount_sats: 21
   });
 
   if (!res.ok) {
@@ -148,7 +143,7 @@ function Zapper(props: { nwc: NWCInfo }) {
         const bolt11 = (await fetchBolt11()).bolt11;
         invoices.push(bolt11);
       }
-      await publishMultiInvoiceRequest(invoices, props.nwc); 
+      await publishMultiInvoiceRequest(invoices, props.nwc);
     } catch (e) {
       console.error(e);
     }
@@ -195,8 +190,8 @@ function Zapper(props: { nwc: NWCInfo }) {
     let keysendParams = [];
     for (let i = 0; i < 3; i++) {
       let keysendParam = {
-        id: String(Math.floor(Math.random() * 10000000)), 
-        pubkey: "02465ed5be53d04fde66c9418ff14a5f2267723810176c9212b722e542dc1afb1b", 
+        id: String(Math.floor(Math.random() * 10000000)),
+        pubkey: "02465ed5be53d04fde66c9418ff14a5f2267723810176c9212b722e542dc1afb1b",
         amount: 42 * 1000
       }
       keysendParams.push(keysendParam)
@@ -219,7 +214,7 @@ function Zapper(props: { nwc: NWCInfo }) {
 
     setLoading(false);
   }
-  
+
   return (
     <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
       <Switch>

@@ -1,6 +1,7 @@
 import { createSignal, Match, Switch } from "solid-js";
 import { createRouteAction } from "solid-start";
-import { token } from "~/stores/auth";
+import {setToken, token} from "~/stores/auth";
+import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
@@ -90,18 +91,11 @@ export function LnChannel() {
       }
       const pushAmount = Math.round(capacity / 100) * pushPercentage;
 
-      const res = await fetch(`${FAUCET_API_URL}/api/channel`, {
-        method: "POST",
-        body: JSON.stringify({
+      const res = await api.post("api/channel", {
           push_amount: pushAmount,
           capacity,
           pubkey,
           host,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token()}`,
-        },
       });
 
       if (!res.ok) {

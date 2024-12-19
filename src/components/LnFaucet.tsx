@@ -1,6 +1,7 @@
-import { token } from "~/stores/auth";
+import {setToken, token} from "~/stores/auth";
 import { Match, Switch } from "solid-js";
 import { createRouteAction } from "solid-start";
+import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
@@ -67,13 +68,8 @@ export function LnFaucet() {
         }
 
         // const result = await payInvoice(bolt11);
-        const res = await fetch(`${FAUCET_API_URL}/api/lightning`, {
-          method: "POST",
-          body: JSON.stringify({ bolt11 }),
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token()}`,
-          },
+        const res = await api.post("api/lightning", {
+          bolt11
         });
 
         if (!res.ok) {

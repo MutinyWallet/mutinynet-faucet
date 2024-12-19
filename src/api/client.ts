@@ -15,9 +15,27 @@ export const api = {
             setToken(null);
             localStorage.removeItem("token");
             window.location.href = "/";
-            return;
         }
 
-        return response.json();
+        return response;
+    },
+    post: async (url: string, body: any) => {
+        const response = await fetch(`${FAUCET_API_URL}/${url}`, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                Authorization: `Bearer ${token()}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.status === 401) {
+            // Handle unauthorized
+            setToken(null);
+            localStorage.removeItem("token");
+            window.location.href = "/";
+        }
+
+        return response;
     },
 };

@@ -5,19 +5,32 @@ import { NWC } from "~/components/NWC";
 import {Match, onMount, Show, Switch} from "solid-js";
 import {setToken, token} from "~/stores/auth";
 import {AuthButton} from "~/components/AuthButton";
+import {api} from "~/api/client";
 
 onMount(() => {
     // Handle auth callback
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+    const tk = params.get("token");
 
-    if (token) {
+    if (tk) {
         // Store token in localStorage and state
-        localStorage.setItem("token", token);
-        setToken(token);
+        localStorage.setItem("token", tk);
+        setToken(tk);
 
         // Clean up URL
         window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (token()) {
+        // check if token is still valid
+        api.get("auth/check").then(async res => {
+            let json = await res.json();
+            if (json.status === "OK") {
+                console.log("token still valid");
+            } else {
+                // Logout
+                localStorage.removeItem("token");
+                setToken(null);
+            }
+        });
     }
 });
 

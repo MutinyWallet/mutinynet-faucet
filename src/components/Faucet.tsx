@@ -1,6 +1,7 @@
 import { Match, Switch, createSignal } from "solid-js";
 import { createRouteAction, useSearchParams } from "solid-start";
-import { token } from "~/stores/auth";
+import {setToken, token} from "~/stores/auth";
+import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
@@ -64,13 +65,9 @@ export function Faucet() {
       // Strip surrounding quotation marks if they exist
       toAddress = toAddress.replace(/^"|"$/g, '').trim();
 
-      const res = await fetch(`${FAUCET_API_URL}/api/onchain`, {
-        method: "POST",
-        body: JSON.stringify({ sats: howMuchSats, address: toAddress }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token()}`,
-        },
+      const res = await api.post("api/onchain", {
+        sats: howMuchSats,
+        address: toAddress,
       });
 
       if (!res.ok) {
