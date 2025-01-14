@@ -73,7 +73,12 @@ export function LnFaucet() {
         });
 
         if (!res.ok) {
-          throw new Error(await res.text());
+          const text = await res.text();
+          if (text.startsWith("<!DOCTYPE html>")) {
+            throw new Error("Rate limit exceeded");
+          } else {
+            throw new Error(text);
+          }
         } else {
           return res.json();
         }
