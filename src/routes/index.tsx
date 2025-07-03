@@ -57,7 +57,7 @@ export default function Home() {
           refund@lnurl.mutinynet.com
         </pre>
         <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
-          tb1qd28npep0s8frcm3y7dxqajkcy2m40eysplyr9v
+          tb1qmt3ue2senlg6ddgmr76hwsk0rdvdk4rgeaen7l
         </pre>
       </div>
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
