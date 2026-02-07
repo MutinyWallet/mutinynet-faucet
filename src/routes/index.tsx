@@ -2,13 +2,25 @@ import { Faucet } from "~/components/Faucet";
 import { LnChannel } from "~/components/LnChannel";
 import { LnFaucet } from "~/components/LnFaucet";
 import { NWC } from "~/components/NWC";
-import {Match, onMount, Show, Switch} from "solid-js";
+import {createSignal, Match, onMount, Show, Switch} from "solid-js";
 import {setToken, token} from "~/stores/auth";
 import {AuthButton} from "~/components/AuthButton";
 import {api} from "~/api/client";
 
 export default function Home() {
+    // Client-only flag to prevent SSR hydration issues
+    const [isClient, setIsClient] = createSignal(false);
+
     onMount(() => {
+        // Mark as client-side
+        setIsClient(true);
+
+        // Ensure token is loaded from localStorage
+        const storedToken = localStorage.getItem("token");
+        if (storedToken && !token()) {
+            setToken(storedToken);
+        }
+
         // Handle auth callback
         const params = new URLSearchParams(window.location.search);
         const tk = params.get("token");
@@ -21,13 +33,11 @@ export default function Home() {
             // Clean up URL
             window.history.replaceState({}, document.title, window.location.pathname);
         } else if (token()) {
-            // check if token is still valid
+            // Check if token is still valid
             api.get("auth/check").then(async res => {
                 let json = await res.json();
-                if (json.status === "OK") {
-                    console.log("token still valid");
-                } else {
-                    // Logout
+                if (json.status !== "OK") {
+                    // Logout if token is invalid
                     localStorage.removeItem("token");
                     setToken(null);
                 }
@@ -40,6 +50,7 @@ export default function Home() {
       <h1 class="font-mono text-4xl drop-shadow-text-glow p-8 font-bold">
         mutinynet
       </h1>
+      <Show when={isClient()} fallback={<div>Loading...</div>}>
         <Switch>
             <Match when={token()}>
                 <Faucet />
@@ -51,6 +62,7 @@ export default function Home() {
                 <AuthButton />
             </Match>
         </Switch>
+      </Show>
       <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
         <h1 class="font-bold text-xl font-mono">Send back your unused sats</h1>
         <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">

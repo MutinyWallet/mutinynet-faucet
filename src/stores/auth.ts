@@ -1,11 +1,9 @@
 import {createEffect, createSignal} from "solid-js";
 
-// Check if window is defined (client-side)
-const isClient = typeof window !== 'undefined';
-
-// Create signals for auth state
+// Create signals for auth state - initialize with localStorage value if available
 export const [token, setToken] = createSignal<string | null>(
-    isClient ? localStorage.getItem("token") : null
+    typeof window !== 'undefined' ? localStorage.getItem("token") : null,
+    { equals: false } // Force updates even if value is same
 );
 
 
