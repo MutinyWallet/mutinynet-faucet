@@ -7,34 +7,34 @@ import {setToken, token} from "~/stores/auth";
 import {AuthButton} from "~/components/AuthButton";
 import {api} from "~/api/client";
 
-onMount(() => {
-    // Handle auth callback
-    const params = new URLSearchParams(window.location.search);
-    const tk = params.get("token");
-
-    if (tk) {
-        // Store token in localStorage and state
-        localStorage.setItem("token", tk);
-        setToken(tk);
-
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (token()) {
-        // check if token is still valid
-        api.get("auth/check").then(async res => {
-            let json = await res.json();
-            if (json.status === "OK") {
-                console.log("token still valid");
-            } else {
-                // Logout
-                localStorage.removeItem("token");
-                setToken(null);
-            }
-        });
-    }
-});
-
 export default function Home() {
+    onMount(() => {
+        // Handle auth callback
+        const params = new URLSearchParams(window.location.search);
+        const tk = params.get("token");
+
+        if (tk) {
+            // Store token in localStorage and state
+            localStorage.setItem("token", tk);
+            setToken(tk);
+
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (token()) {
+            // check if token is still valid
+            api.get("auth/check").then(async res => {
+                let json = await res.json();
+                if (json.status === "OK") {
+                    console.log("token still valid");
+                } else {
+                    // Logout
+                    localStorage.removeItem("token");
+                    setToken(null);
+                }
+            });
+        }
+    });
+
   return (
     <main class="flex flex-col gap-4 items-center w-full max-w-[40rem] mx-auto">
       <h1 class="font-mono text-4xl drop-shadow-text-glow p-8 font-bold">
