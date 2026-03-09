@@ -1,0 +1,49 @@
+# Mutinynet Faucet
+
+> A Bitcoin signet faucet for developers testing on Mutinynet. Dispenses test bitcoin on-chain, pays Lightning invoices, opens channels, and supports Nostr wallet testing. Authenticate via GitHub OAuth or L402 Lightning payments.
+
+The faucet is hosted at [faucet.mutinynet.com](https://faucet.mutinynet.com).
+
+## Authentication
+
+Three methods are supported:
+
+- **GitHub OAuth (Web)**: Log in via GitHub at `/auth/github` to receive a JWT Bearer token (24-hour expiry).
+- **GitHub OAuth (Device)**: `POST /auth/github/device` for CLI/device-based flows (31-day expiry).
+- **L402 (Lightning)**: Pay a mainnet Lightning invoice to get access. Send `GET /api/l402` to receive a challenge, pay the invoice, then authenticate with `Authorization: L402 {token}:{preimage}`.
+
+## API Endpoints
+
+All endpoints below require authentication unless noted otherwise.
+
+### On-Chain Faucet
+- `POST /api/onchain` - Send test bitcoin to an address
+  - Body: `{"sats": 100000, "address": "tb1q..."}`
+  - Response: `{"txid": "...", "address": "..."}`
+  - Max: 1,000,000 sats per request
+
+### Lightning Payments
+- `POST /api/lightning` - Pay a BOLT11 invoice, LNURL, or Lightning address
+  - Body: `{"bolt11": "lnbc1..."}`
+  - Response: `{"payment_hash": "..."}`
+  - Max: 1,000,000 sats
+
+### Channel Opening
+- `POST /api/channel` - Open a Lightning channel to your node
+  - Body: `{"capacity": 1000000, "push_amount": 500000, "pubkey": "02abc...", "host": "127.0.0.1:9735"}`
+  - Response: `{"txid": "..."}`
+  - Max capacity: 1,000,000 sats
+
+### Invoice Generation (No Auth)
+- `POST /api/bolt11` - Generate a BOLT11 invoice for testing receive flows
+  - Body: `{"amount_sats": 1000}`
+  - Response: `{"bolt11": "..."}`
+
+### L402 Challenge
+- `GET /api/l402` - Returns HTTP 402 with `WWW-Authenticate: L402 token="...", invoice="..."`
+- `POST /api/l402` - Generate L402 credentials: `{"invoice": "...", "token": "..."}`
+
+## Rate Limits
+
+- 1,000,000 sats per IP / per user / per address in a 24-hour rolling window
+- L402 users are rate-limited per payment hash
