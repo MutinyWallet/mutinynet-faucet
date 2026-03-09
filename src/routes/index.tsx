@@ -3,8 +3,9 @@ import { LnChannel } from "~/components/LnChannel";
 import { LnFaucet } from "~/components/LnFaucet";
 import { NWC } from "~/components/NWC";
 import {createSignal, Match, onMount, Show, Switch} from "solid-js";
-import {setToken, token} from "~/stores/auth";
+import {isAuthed, setToken, token} from "~/stores/auth";
 import {AuthButton} from "~/components/AuthButton";
+import {L402Login} from "~/components/L402Login";
 import {api} from "~/api/client";
 
 export default function Home() {
@@ -26,14 +27,14 @@ export default function Home() {
         const tk = params.get("token");
 
         if (tk) {
-            // Store token in localStorage and state
+            // Store token in localStorage and state (GitHub OAuth callback)
             localStorage.setItem("token", tk);
             setToken(tk);
 
             // Clean up URL
             window.history.replaceState({}, document.title, window.location.pathname);
         } else if (token()) {
-            // Check if token is still valid
+            // Check if Bearer token is still valid
             api.get("auth/check").then(async res => {
                 let json = await res.json();
                 if (json.status !== "OK") {
@@ -52,7 +53,7 @@ export default function Home() {
       </h1>
       <Show when={isClient()} fallback={<div>Loading...</div>}>
         <Switch>
-            <Match when={token()}>
+            <Match when={isAuthed()}>
                 <Faucet />
                 <LnFaucet />
                 <LnChannel />
@@ -64,13 +65,12 @@ export default function Home() {
                   <AuthButton />
                 </div>
                 <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col items-center">
-                  <h2 class="font-bold text-xl font-mono">AI Agent?</h2>
-                  <p class="text-center">
-                    Use{" "}
-                    <a href="https://faucet.mutinynet.com/api/l402" class="underline">L402</a>
-                    {" "} for programmatic access &mdash; pay a Lightning invoice, no account needed.
+                  <h2 class="font-bold text-xl font-mono">Pay with Lightning</h2>
+                  <p class="text-center text-sm text-white/70">
+                    No account needed &mdash; pay an invoice to get access.
                   </p>
-                  <a href="/llms.txt" class="underline text-sm">llms.txt</a>
+                  <L402Login />
+                  <a href="/llms.txt" class="underline text-xs text-white/50">llms.txt</a>
                 </div>
             </Match>
         </Switch>
@@ -90,7 +90,7 @@ export default function Home() {
             02465ed5be53d04fde66c9418ff14a5f2267723810176c9212b722e542dc1afb1b@45.79.52.207:9735
         </pre>
       </div>
-      <Show when={token()}>
+      <Show when={isAuthed()}>
           <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
             <h1 class="font-bold text-xl font-mono">Infinite LNURL Withdrawal!</h1>
             <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
