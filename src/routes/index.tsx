@@ -59,7 +59,19 @@ export default function Home() {
                 <NWC />
             </Match>
             <Match when={true}>
-                <AuthButton />
+                <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col items-center">
+                  <h2 class="font-bold text-xl font-mono">Human?</h2>
+                  <AuthButton />
+                </div>
+                <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col items-center">
+                  <h2 class="font-bold text-xl font-mono">AI Agent?</h2>
+                  <p class="text-center">
+                    Use{" "}
+                    <a href="https://faucet.mutinynet.com/api/l402" class="underline">L402</a>
+                    {" "} for programmatic access &mdash; pay a Lightning invoice, no account needed.
+                  </p>
+                  <a href="/llms.txt" class="underline text-sm">llms.txt</a>
+                </div>
             </Match>
         </Switch>
       </Show>
