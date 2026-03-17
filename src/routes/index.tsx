@@ -51,6 +51,7 @@ export default function Home() {
       <h1 class="font-mono text-4xl drop-shadow-text-glow p-8 font-bold">
         mutinynet
       </h1>
+
       <Show when={isClient()} fallback={<div>Loading...</div>}>
         <Switch>
             <Match when={isAuthed()}>
