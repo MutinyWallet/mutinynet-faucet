@@ -39,6 +39,23 @@ export default function Root() {
             </Routes>
           </ErrorBoundary>
         </Suspense>
+        <footer class="w-full border-t border-white/20 mt-8 py-6 text-center text-sm text-white/60">
+          <p>
+            For consulting, reach out at{" "}
+            <a href="mailto:hello@mutinynet.com" class="underline text-white/80 hover:text-white">
+              hello@mutinynet.com
+            </a>
+            {" "}&middot;{" "}
+            <a
+              href="https://x.com/benthecarman"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline text-white/80 hover:text-white"
+            >
+              @benthecarman
+            </a>
+          </p>
+        </footer>
         <Scripts />
       </Body>
     </Html>
