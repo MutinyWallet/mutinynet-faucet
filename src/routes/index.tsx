@@ -1,4 +1,5 @@
 import { Faucet } from "~/components/Faucet";
+import { LimitProgress } from "~/components/LimitProgress";
 import { LnChannel } from "~/components/LnChannel";
 import { LnFaucet } from "~/components/LnFaucet";
 import { NWC } from "~/components/NWC";
@@ -55,6 +56,7 @@ export default function Home() {
       <Show when={isClient()} fallback={<div>Loading...</div>}>
         <Switch>
             <Match when={isAuthed()}>
+                <LimitProgress />
                 <Faucet />
                 <LnFaucet />
                 <LnChannel />
