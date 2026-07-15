@@ -3,6 +3,7 @@ import { LimitProgress } from "~/components/LimitProgress";
 import { LnChannel } from "~/components/LnChannel";
 import { LnFaucet } from "~/components/LnFaucet";
 import { NWC } from "~/components/NWC";
+import { Arkade } from "~/components/Arkade";
 import {createSignal, Match, onMount, Show, Switch} from "solid-js";
 import {isAuthed, setToken, token} from "~/stores/auth";
 import {AuthButton} from "~/components/AuthButton";
@@ -61,6 +62,7 @@ export default function Home() {
                 <LnFaucet />
                 <LnChannel />
                 <NWC />
+                <Arkade />
             </Match>
             <Match when={true}>
                 <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col items-center">
