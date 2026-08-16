@@ -2,7 +2,7 @@
   "name": "mutinynet-faucet",
   "scripts": {
     "dev": "solid-start dev",
-    "build": "solid-start build",
+    "build": "node scripts/generate-agent-skills.mjs && solid-start build",
     "start": "solid-start start"
   },
   "type": "module",

@@ -1,0 +1,219 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Mutinynet Faucet API",
+    "description": "Bitcoin signet faucet for Mutinynet: dispenses test bitcoin on-chain, pays Lightning invoices, opens channels, and generates test invoices.",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://faucet.mutinynet.com" }],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT obtained via GitHub OAuth (/auth/github or POST /auth/github/device)."
+      },
+      "l402Auth": {
+        "type": "http",
+        "scheme": "L402",
+        "description": "L402 credentials: token and invoice preimage, obtained from the GET /api/l402 challenge."
+      }
+    }
+  },
+  "security": [{ "bearerAuth": [] }, { "l402Auth": [] }],
+  "paths": {
+    "/api/onchain": {
+      "post": {
+        "summary": "Send test bitcoin to a signet address",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["address"],
+                "properties": {
+                  "sats": { "type": "integer", "default": 100000, "maximum": 1000000 },
+                  "address": { "type": "string", "description": "Bitcoin signet address, e.g. tb1q..." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Coins sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "txid": { "type": "string" },
+                    "address": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Missing or invalid credentials" }
+        }
+      }
+    },
+    "/api/lightning": {
+      "post": {
+        "summary": "Pay a BOLT11 invoice, LNURL, or Lightning address",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["bolt11"],
+                "properties": {
+                  "bolt11": { "type": "string", "description": "BOLT11 invoice, LNURL, or Lightning address" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "payment_hash": { "type": "string" } }
+                }
+              }
+            }
+          },
+          "401": { "description": "Missing or invalid credentials" }
+        }
+      }
+    },
+    "/api/channel": {
+      "post": {
+        "summary": "Open a Lightning channel from the faucet node",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["pubkey"],
+                "properties": {
+                  "pubkey": { "type": "string", "description": "Your node's public key" },
+                  "host": { "type": "string", "description": "Your node's host:port, e.g. 127.0.0.1:9735" },
+                  "capacity": { "type": "integer", "default": 100000, "maximum": 1000000 },
+                  "push_amount": { "type": "integer", "default": 0 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Channel opened",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "txid": { "type": "string" } }
+                }
+              }
+            }
+          },
+          "401": { "description": "Missing or invalid credentials" }
+        }
+      }
+    },
+    "/api/bolt11": {
+      "post": {
+        "summary": "Generate a BOLT11 invoice for testing receive flows",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["amount_sats"],
+                "properties": { "amount_sats": { "type": "integer", "default": 1000 } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invoice created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "bolt11": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/l402": {
+      "get": {
+        "summary": "Request an L402 payment challenge",
+        "security": [],
+        "responses": {
+          "402": {
+            "description": "Payment required. WWW-Authenticate: L402 token=\"...\", invoice=\"...\"",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Generate L402 credentials",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "invoice": { "type": "string" },
+                  "token": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "L402 credentials created" }
+        }
+      }
+    },
+    "/auth/github": {
+      "get": {
+        "summary": "Start the GitHub OAuth web flow",
+        "security": [],
+        "responses": {
+          "302": { "description": "Redirect to GitHub for authorization" }
+        }
+      }
+    },
+    "/auth/github/device": {
+      "post": {
+        "summary": "Start the GitHub OAuth device flow for CLIs and agents",
+        "security": [],
+        "responses": {
+          "200": { "description": "Device flow started; returns a JWT Bearer token on completion (31-day expiry)" }
+        }
+      }
+    }
+  }
+}

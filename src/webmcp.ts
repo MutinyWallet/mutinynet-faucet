@@ -1,10 +1,7 @@
 import { api } from "~/api/client";
 
-export function registerWebMCPTools() {
-  const mc = (navigator as any).modelContext;
-  if (!mc) return;
-
-  mc.registerTool({
+const tools = [
+  {
     name: "send_onchain",
     description:
       "Send test bitcoin on Mutinynet signet to a given address. Max 1,000,000 sats per request.",
@@ -27,9 +24,8 @@ export function registerWebMCPTools() {
         content: [{ type: "text", text: `Sent ${input.sats ?? 100000} sats. txid: ${json.txid}` }],
       };
     },
-  });
-
-  mc.registerTool({
+  },
+  {
     name: "pay_lightning",
     description:
       "Pay a BOLT11 invoice, LNURL, or Lightning address on Mutinynet. Max 1,000,000 sats.",
@@ -48,9 +44,8 @@ export function registerWebMCPTools() {
         content: [{ type: "text", text: `Payment sent. payment_hash: ${json.payment_hash}` }],
       };
     },
-  });
-
-  mc.registerTool({
+  },
+  {
     name: "open_channel",
     description:
       "Open a Lightning channel from the Mutinynet faucet node to your node. Max capacity 1,000,000 sats.",
@@ -77,5 +72,18 @@ export function registerWebMCPTools() {
         content: [{ type: "text", text: `Channel opened. txid: ${json.txid}` }],
       };
     },
-  });
+  },
+];
+
+export function registerWebMCPTools() {
+  const mc = (navigator as any).modelContext;
+  if (!mc) return;
+
+  // Current WebMCP API (webmachinelearning.github.io/webmcp); fall back to
+  // the older registerTool shape used by early Chrome builds.
+  if (typeof mc.provideContext === "function") {
+    mc.provideContext({ tools });
+  } else if (typeof mc.registerTool === "function") {
+    for (const tool of tools) mc.registerTool(tool);
+  }
 }

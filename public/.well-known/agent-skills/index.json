@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "mutinynet-faucet",
+      "type": "skill-md",
+      "description": "Get test bitcoin on the Mutinynet signet. Use when an agent needs signet coins on-chain, needs to pay a Lightning invoice, open a Lightning channel, or generate a test BOLT11 invoice.",
+      "url": "/.well-known/agent-skills/mutinynet-faucet/SKILL.md",
+      "digest": "sha256:c64968868f766e29020bfe8b2b43d17a2718a29b639855605614d639dcd869a6"
+    }
+  ]
+}
