@@ -102,16 +102,9 @@ export function Faucet() {
               placeholder="sats"
               value={amount()}
               onInput={(e) => setAmount(e.currentTarget.value)}
-              max="10000001"
+              max="1000000"
             />
             <div class="flex gap-2 -mt-2 mb-2">
-              <button
-                type="button"
-                onClick={() => setAmount("10000000")}
-                class={SIMPLE_BUTTON}
-              >
-                10M
-              </button>
               <button
                 type="button"
                 onClick={() => setAmount("1000000")}
@@ -125,6 +118,13 @@ export function Faucet() {
                 class={SIMPLE_BUTTON}
               >
                 100K
+              </button>
+              <button
+                type="button"
+                onClick={() => setAmount("10000")}
+                class={SIMPLE_BUTTON}
+              >
+                10K
               </button>
             </div>
             <label for="address">Destination</label>

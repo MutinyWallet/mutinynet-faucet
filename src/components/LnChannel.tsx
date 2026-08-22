@@ -123,16 +123,9 @@ export function LnChannel() {
             placeholder="sats"
             value={capacity()}
             onInput={(e) => setCapacity(e.currentTarget.value)}
-            max="10000001"
+            max="1000000"
           />
           <div class="flex gap-2 -mt-2 mb-2">
-            <button
-              type="button"
-              onClick={() => setCapacity("10000000")}
-              class={SIMPLE_BUTTON}
-            >
-              10M
-            </button>
             <button
               type="button"
               onClick={() => setCapacity("1000000")}
@@ -146,6 +139,13 @@ export function LnChannel() {
               class={SIMPLE_BUTTON}
             >
               100K
+            </button>
+            <button
+              type="button"
+              onClick={() => setCapacity("10000")}
+              class={SIMPLE_BUTTON}
+            >
+              10K
             </button>
           </div>
           <label for="pushPercentage">Amount to push? (percentage)</label>
