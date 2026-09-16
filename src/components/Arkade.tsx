@@ -34,7 +34,19 @@ export function Arkade() {
     const res = await api.post("api/arkade", { address, sats });
     if (!res.ok) {
       const text = await res.text();
-      throw new Error(text.startsWith("<!DOCTYPE html>") ? "Rate limit exceeded" : text);
+      if (text.startsWith("<!DOCTYPE html>")) {
+        throw new Error("Rate limit exceeded");
+      }
+      let message = text;
+      try {
+        const json = JSON.parse(text);
+        if (typeof json?.error === "string") {
+          message = json.error;
+        }
+      } catch {
+        // Keep the raw response when it isn't JSON.
+      }
+      throw new Error(message);
     }
     const json = await res.json();
     return { txid: json.txid, sats, address };
@@ -50,7 +62,7 @@ export function Arkade() {
         <Match when={true}>
           <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
             <label for="how_much">How much? (sats)</label>
-            <input type="number" name="how_much" placeholder="sats" value={amount()}
+            <input type="number" name="how_much" min={1} placeholder="sats" value={amount()}
               onInput={(e) => setAmount(e.currentTarget.value)} />
             <label for="address">Arkade address</label>
             <input type="text" name="address" placeholder="tark1..." />
