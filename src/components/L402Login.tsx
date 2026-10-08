@@ -1,4 +1,5 @@
-import { createSignal, onCleanup, Show } from "solid-js";
+import { createEffect, createSignal, onCleanup, Show } from "solid-js";
+import QRCode from "qrcode";
 import { loginL402 } from "~/stores/auth";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
@@ -10,6 +11,18 @@ export function L402Login() {
   const [loading, setLoading] = createSignal(false);
   const [polling, setPolling] = createSignal(false);
   const [copied, setCopied] = createSignal(false);
+  const [qrSvg, setQrSvg] = createSignal<string | null>(null);
+
+  createEffect(() => {
+    const inv = invoice();
+    setQrSvg(null);
+    if (!inv) return;
+    QRCode.toString(`lightning:${inv.toUpperCase()}`, { type: "svg", margin: 2 })
+      .then((svg) => {
+        if (invoice() === inv) setQrSvg(svg);
+      })
+      .catch(() => {});
+  });
 
   let pollInterval: ReturnType<typeof setInterval> | undefined;
 
@@ -84,6 +97,13 @@ export function L402Login() {
         }
       >
         <p class="text-sm text-center">Pay this invoice to log in:</p>
+        <Show when={qrSvg()}>
+          <a
+            href={`lightning:${invoice()}`}
+            class="block w-64 max-w-full bg-white rounded-lg overflow-hidden"
+            innerHTML={qrSvg()!}
+          />
+        </Show>
         <pre
           onClick={copyInvoice}
           class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg w-full text-sm cursor-pointer"
