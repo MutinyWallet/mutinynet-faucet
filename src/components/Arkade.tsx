@@ -48,7 +48,7 @@ export function Arkade() {
     const sats = parseInt(formData.get("how_much")?.toString() ?? "50000");
     const destination = (formData.get("destination")?.toString() ?? "").replace(/^"|"$/g, "").trim();
 
-    const res = await api.post("api/arkade", { destination, sats });
+    const res = await api.post("api/arkade", { address: destination, sats });
     if (!res.ok) {
       const text = await res.text();
       if (text.startsWith("<!DOCTYPE html>")) {
