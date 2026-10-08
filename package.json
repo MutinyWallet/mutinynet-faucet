@@ -8,23 +8,23 @@
   "type": "module",
   "devDependencies": {
     "@types/qrcode": "^1.5.6",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.22",
-    "solid-start-node": "^0.2.26",
-    "tailwindcss": "^3.3.1",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.29",
+    "solid-start-node": "^0.2.32",
+    "tailwindcss": "^3.4.19",
     "typescript": "^4.9.5",
-    "vite": "^4.2.2"
+    "vite": "^4.5.14"
   },
   "dependencies": {
-    "@nostr-dev-kit/ndk": "^0.8.17",
-    "@solidjs/meta": "^0.28.4",
-    "@solidjs/router": "^0.8.2",
+    "@nostr-dev-kit/ndk": "^0.8.23",
+    "@solidjs/meta": "^0.28.7",
+    "@solidjs/router": "^0.8.4",
     "qrcode": "^1.5.4",
-    "solid-js": "^1.7.3",
-    "solid-start": "^0.2.26",
-    "undici": "^5.21.2"
+    "solid-js": "^1.9.17",
+    "solid-start": "^0.2.32",
+    "undici": "^6.29.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18.17"
   }
 }
