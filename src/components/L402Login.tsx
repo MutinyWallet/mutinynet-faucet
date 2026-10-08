@@ -47,14 +47,19 @@ export function L402Login() {
       pollInterval = setInterval(async () => {
         try {
           const checkRes = await fetch(
-            `${FAUCET_API_URL}/api/l402/check?token=${encodeURIComponent(data.token)}`
+            `${FAUCET_API_URL}/api/l402/check?token=${encodeURIComponent(data.token)}`,
+            { headers: { "X-L402-Claim": data.claim } }
           );
           if (!checkRes.ok) return;
           const check = await checkRes.json();
           if (check.status === "settled") {
             clearInterval(pollInterval);
             setPolling(false);
-            loginL402(data.token, check.preimage);
+            if (check.preimage) {
+              loginL402(data.token, check.preimage);
+            } else {
+              setError("Payment received but login failed. Please contact us.");
+            }
           } else if (check.status === "expired") {
             clearInterval(pollInterval);
             setPolling(false);
