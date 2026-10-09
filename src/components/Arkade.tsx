@@ -64,7 +64,9 @@ export function Arkade() {
       }
       throw new Error(message);
     }
-    return { ...(await res.json()), destination };
+    const json = await res.json();
+    // Older backends answer with only `txid`, for a settled Arkade send.
+    return { ...json, rail: json.rail ?? "ark", status: json.status ?? "settled", amount: json.amount ?? sats, destination };
   });
 
   return (
