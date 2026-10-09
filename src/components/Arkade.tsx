@@ -8,7 +8,6 @@ const SIMPLE_BUTTON =
 const RAILS: Record<string, string> = {
   ark: "Arkade",
   lightning: "Lightning (Arkade swap)",
-  "onchain-swap": "on-chain (Arkade swap)",
   onchain: "on-chain (next batch)",
 };
 
