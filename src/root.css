@@ -2,11 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
 body {
   @apply text-white bg-black;
   @apply bg-fixed bg-no-repeat bg-gradient-to-b from-black to-gray-700;
   overscroll-behavior-y: none;
   min-height: 100.3%;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .bg-gradient {
@@ -28,8 +37,35 @@ a {
 input[type="text"],
 input[type="number"],
 textarea {
-  @apply p-4 rounded-xl;
-  @apply text-black;
-  @apply placeholder-[#4E5B7E];
-  @apply border-[2px] focus:outline-none focus:ring-2 focus:ring-offset-2  ring-offset-black;
+  @apply w-full px-4 py-3 rounded-xl font-mono text-white;
+  @apply bg-black/40 border border-white/15;
+  @apply placeholder-white/35;
+  @apply focus:outline-none focus:border-mint focus:ring-[3px] focus:ring-mint/25;
+}
+
+@layer components {
+  .hero-halo {
+    background: radial-gradient(ellipse at center, rgba(11, 33, 91, 0.9) 0%, rgba(11, 33, 91, 0) 65%);
+  }
+
+  .panel {
+    @apply rounded-2xl bg-black/50 border border-white/10 p-6 shadow-[0_0_32px_rgba(11,33,91,0.5)];
+  }
+
+  .field-label {
+    @apply text-sm text-white/70;
+  }
+
+  .chip {
+    @apply font-mono text-xs px-2.5 py-1 rounded-lg border border-white/20 hover:border-white transition-colors;
+  }
+
+  .btn-primary {
+    @apply p-4 rounded-xl text-xl font-semibold bg-mint text-white hover:brightness-110 cursor-pointer;
+    @apply disabled:bg-gray-500 disabled:hover:brightness-100 disabled:cursor-default;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 rounded-xl font-semibold border border-white/30 hover:border-white transition-colors;
+  }
 }

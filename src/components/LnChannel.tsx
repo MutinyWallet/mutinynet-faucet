@@ -5,17 +5,16 @@ import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
-const SIMPLE_BUTTON =
-  "mt-4 px-4 py-2 rounded-xl text-xl font-semibold bg-black text-white border border-white";
+const SIMPLE_BUTTON = "btn-secondary mt-2";
 
 function Pop(props: any) {
   return (
-    <div class="rounded-xl p-4 w-full flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
+    <div class="w-full flex flex-col items-center gap-2 text-center">
       {/* {JSON.stringify(props, null, 2)} */}
       <Switch>
         <Match when={props.result}>
           <p>Opened the channel, here's the transaction id</p>
-          <pre class="text-sm font-mono">{props.result?.txid}</pre>
+          <pre class="text-sm font-mono break-all whitespace-pre-wrap">{props.result?.txid}</pre>
           <a href={`https://mutinynet.com/tx/${props.result?.txid}`}>
             View on mempool.space
           </a>
@@ -115,82 +114,69 @@ export function LnChannel() {
         <Pop result={sendResult.result} error={sendResult.error} />
       </Match>
       <Match when={true}>
-        <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
-          <label for="capacity">Channel capacity? (sats)</label>
-          <input
-            type="number"
-            name="capacity"
-            placeholder="sats"
-            value={capacity()}
-            onInput={(e) => setCapacity(e.currentTarget.value)}
-            max="1000000"
-          />
-          <div class="flex gap-2 -mt-2 mb-2">
-            <button
-              type="button"
-              onClick={() => setCapacity("1000000")}
-              class={SIMPLE_BUTTON}
-            >
-              1M
-            </button>
-            <button
-              type="button"
-              onClick={() => setCapacity("100000")}
-              class={SIMPLE_BUTTON}
-            >
-              100K
-            </button>
-            <button
-              type="button"
-              onClick={() => setCapacity("10000")}
-              class={SIMPLE_BUTTON}
-            >
-              10K
-            </button>
+        <Form class="flex flex-col gap-4">
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div class="flex flex-col gap-2">
+              <label for="capacity" class="field-label">Capacity (sats)</label>
+              <input
+                type="number"
+                id="capacity"
+                name="capacity"
+                placeholder="sats"
+                value={capacity()}
+                onInput={(e) => setCapacity(e.currentTarget.value)}
+                max="1000000"
+              />
+              <div class="flex gap-2">
+                <button type="button" onClick={() => setCapacity("1000000")} class="chip">
+                  1M
+                </button>
+                <button type="button" onClick={() => setCapacity("100000")} class="chip">
+                  100K
+                </button>
+                <button type="button" onClick={() => setCapacity("10000")} class="chip">
+                  10K
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="pushPercentage" class="field-label">Push to you (%)</label>
+              <input
+                type="number"
+                id="pushPercentage"
+                name="pushPercentage"
+                placeholder="50"
+                value={pushPercentage()}
+                onInput={(e) => setPushPercentage(e.currentTarget.value)}
+                max="100"
+              />
+              <div class="flex gap-2">
+                <button type="button" onClick={() => setPushPercentage("0")} class="chip">
+                  0%
+                </button>
+                <button type="button" onClick={() => setPushPercentage("50")} class="chip">
+                  50%
+                </button>
+                <button type="button" onClick={() => setPushPercentage("100")} class="chip">
+                  100%
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="connectionString" class="field-label">Your node</label>
+              <input
+                type="text"
+                id="connectionString"
+                name="connectionString"
+                placeholder="pubkey@host:port"
+              />
+            </div>
           </div>
-          <label for="pushPercentage">Amount to push? (percentage)</label>
-          <input
-            type="number"
-            name="pushPercentage"
-            placeholder="50"
-            value={pushPercentage()}
-            onInput={(e) => setPushPercentage(e.currentTarget.value)}
-            max="100"
-          />
-          <div class="flex gap-2 -mt-2 mb-2">
-            <button
-              type="button"
-              onClick={() => setPushPercentage("0")}
-              class={SIMPLE_BUTTON}
-            >
-              0%
-            </button>
-            <button
-              type="button"
-              onClick={() => setPushPercentage("50")}
-              class={SIMPLE_BUTTON}
-            >
-              50%
-            </button>
-            <button
-              type="button"
-              onClick={() => setPushPercentage("100")}
-              class={SIMPLE_BUTTON}
-            >
-              100%
-            </button>
-          </div>
-          <label for="address">Connection string</label>
-          <input
-            type="text"
-            name="connectionString"
-            placeholder="pubkey@host:port"
-          />
           <input
             type="submit"
             disabled={sendResult.pending}
             value={sendResult.pending ? "..." : "Gimme a lightning channel"}
-            class="mt-4 p-4 rounded-xl text-xl font-semibold bg-[#1EA67F] text-white disabled:bg-gray-500"
+            class="btn-primary"
           />
         </Form>
       </Match>

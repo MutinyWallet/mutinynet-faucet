@@ -88,16 +88,16 @@ export function L402Login() {
   };
 
   return (
-    <div class="flex flex-col gap-3 items-center w-full">
+    <div class={`flex flex-col gap-3 items-center ${invoice() ? "w-full" : ""}`}>
       <Show
         when={invoice()}
         fallback={
           <button
             onClick={startL402}
             disabled={loading()}
-            class="px-4 py-2 bg-[#F7931A] text-white rounded disabled:bg-gray-500"
+            class="px-6 py-3 rounded-xl bg-btc-orange text-white font-semibold hover:brightness-110 disabled:bg-gray-500"
           >
-            {loading() ? "..." : "Pay with Lightning"}
+            {loading() ? "..." : "⚡ Pay with Lightning"}
           </button>
         }
       >
@@ -111,7 +111,7 @@ export function L402Login() {
         </Show>
         <pre
           onClick={copyInvoice}
-          class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg w-full text-sm cursor-pointer"
+          class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg w-full max-w-md text-sm cursor-pointer"
         >
           {invoice()}
         </pre>

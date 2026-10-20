@@ -17,6 +17,9 @@ module.exports = {
         "half-black": "rgba(0, 0, 0, 0.5)",
         "faint-white": "rgba(255, 255, 255, 0.1)",
         "m-red": "#F61D5B",
+        "mint": "#1EA67F",
+        "navy": "#0B215B",
+        "btc-orange": "#F7931A",
         "light-text": "rgba(250, 245, 234, 0.5)",
       },
       backgroundImage: {

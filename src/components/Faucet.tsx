@@ -5,17 +5,16 @@ import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
-const SIMPLE_BUTTON =
-  "mt-4 px-4 py-2 rounded-xl text-xl font-semibold bg-black text-white border border-white";
+const SIMPLE_BUTTON = "btn-secondary mt-2";
 
 function Tx(props: { result: any; error: any }) {
   //   const { txid, howMuchSats, toAddress } = props.result?.result || {};
   return (
-    <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
+    <div class="flex flex-col items-center gap-2 text-center">
       <Switch>
         <Match when={props.result && props.result?.txid}>
           <p>Sent {props.result?.howMuchSats} sats to</p>
-          <pre class="text-sm font-mono">{props.result?.toAddress}</pre>
+          <pre class="text-sm font-mono break-all whitespace-pre-wrap">{props.result?.toAddress}</pre>
           <a href={`https://mutinynet.com/tx/${props.result?.txid}`} class="">
             View on mempool.space
           </a>
@@ -94,51 +93,47 @@ export function Faucet() {
           <Tx result={sendResult.result} error={sendResult.error} />
         </Match>
         <Match when={true}>
-          <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
-            <label for="how_much">How much? (sats)</label>
-            <input
-              type="number"
-              name="how_much"
-              placeholder="sats"
-              value={amount()}
-              onInput={(e) => setAmount(e.currentTarget.value)}
-              max="1000000"
-            />
-            <div class="flex gap-2 -mt-2 mb-2">
-              <button
-                type="button"
-                onClick={() => setAmount("1000000")}
-                class={SIMPLE_BUTTON}
-              >
-                1M
-              </button>
-              <button
-                type="button"
-                onClick={() => setAmount("100000")}
-                class={SIMPLE_BUTTON}
-              >
-                100K
-              </button>
-              <button
-                type="button"
-                onClick={() => setAmount("10000")}
-                class={SIMPLE_BUTTON}
-              >
-                10K
-              </button>
+          <Form class="flex flex-col gap-4">
+            <div class="grid sm:grid-cols-[12rem_1fr] gap-4">
+              <div class="flex flex-col gap-2">
+                <label for="how_much" class="field-label">Amount (sats)</label>
+                <input
+                  type="number"
+                  id="how_much"
+                  name="how_much"
+                  placeholder="sats"
+                  value={amount()}
+                  onInput={(e) => setAmount(e.currentTarget.value)}
+                  max="1000000"
+                />
+                <div class="flex gap-2">
+                  <button type="button" onClick={() => setAmount("1000000")} class="chip">
+                    1M
+                  </button>
+                  <button type="button" onClick={() => setAmount("100000")} class="chip">
+                    100K
+                  </button>
+                  <button type="button" onClick={() => setAmount("10000")} class="chip">
+                    10K
+                  </button>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label for="address" class="field-label">Destination</label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  placeholder="tb1q..."
+                  value={searchParams.address || ""}
+                />
+              </div>
             </div>
-            <label for="address">Destination</label>
-            <input
-              type="text"
-              name="address"
-              placeholder="tb1q..."
-              value={searchParams.address || ""}
-            />
             <input
               type="submit"
               disabled={sendResult.pending}
               value={sendResult.pending ? "..." : "Make it rain"}
-              class="mt-4 p-4 rounded-xl text-xl font-semibold bg-[#1EA67F] text-white disabled:bg-gray-500"
+              class="btn-primary"
             />
           </Form>
         </Match>

@@ -5,17 +5,16 @@ import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
-const SIMPLE_BUTTON =
-  "mt-4 px-4 py-2 rounded-xl text-xl font-semibold bg-black text-white border border-white";
+const SIMPLE_BUTTON = "btn-secondary mt-2";
 
 function Pop(props: any) {
   return (
-    <div class="rounded-xl p-4 w-full flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
+    <div class="w-full flex flex-col items-center gap-2 text-center">
       {/* {JSON.stringify(props, null, 2)} */}
       <Switch>
         <Match when={props.result}>
           <p>Paid the invoice, here's your proof</p>
-          <pre class="text-sm font-mono">{props.result?.payment_hash}</pre>
+          <pre class="text-sm font-mono break-all whitespace-pre-wrap">{props.result?.payment_hash}</pre>
           <button
             class={SIMPLE_BUTTON}
             onClick={() => window.location.reload()}
@@ -92,14 +91,16 @@ export function LnFaucet() {
         <Pop result={sendResult.result} error={sendResult.error} />
       </Match>
       <Match when={true}>
-        <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
-          <label for="address">Bolt11 Payment Request</label>
-          <textarea rows="4" name="bolt11" placeholder="lntb..." />
+        <Form class="flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="bolt11" class="field-label">Bolt11 payment request</label>
+            <textarea rows="4" id="bolt11" name="bolt11" placeholder="lntb..." />
+          </div>
           <input
             type="submit"
             disabled={sendResult.pending}
             value={sendResult.pending ? "..." : "Strike me now"}
-            class="mt-4 p-4 rounded-xl text-xl font-semibold bg-[#1EA67F] text-white disabled:bg-gray-500"
+            class="btn-primary"
           />
         </Form>
       </Match>

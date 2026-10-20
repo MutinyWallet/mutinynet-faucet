@@ -6,8 +6,7 @@ import {api} from "~/api/client";
 
 const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API;
 
-const GREEN_BUTTON =
-  "mt-4 p-4 rounded-xl text-xl font-semibold bg-[#1EA67F] text-white disabled:bg-gray-500";
+const GREEN_BUTTON = "btn-primary";
 
 type NWCInfo = {
   relay: string;
@@ -216,7 +215,7 @@ function Zapper(props: { nwc: NWCInfo }) {
   }
 
   return (
-    <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
+    <div class="w-full flex flex-col gap-3">
       <Switch>
         <Match when={error()}>
           <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
@@ -224,21 +223,23 @@ function Zapper(props: { nwc: NWCInfo }) {
           </pre>
         </Match>
         <Match when={true}>
-          <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
+          <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg text-sm">
             {JSON.stringify(props.nwc, null, 2)}
           </pre>
-          <button class={GREEN_BUTTON} onClick={handleZap}>
-            {loading() ? "..." : "Send Zap Request"}
-          </button>
-          <button class={GREEN_BUTTON} onClick={handleMultiZap}>
-            {loading() ? "..." : "Send Multiple Zap Requests"}
-          </button>
-          <button class={GREEN_BUTTON} onClick={handleKeysend}>
-            {loading() ? "..." : "Send Keysend Request"}
-          </button>
-          <button class={GREEN_BUTTON} onClick={handleMultiKeysend}>
-            {loading() ? "..." : "Send Multiple Keysend Requests"}
-          </button>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <button class={GREEN_BUTTON} onClick={handleZap}>
+              {loading() ? "..." : "Send Zap Request"}
+            </button>
+            <button class={GREEN_BUTTON} onClick={handleMultiZap}>
+              {loading() ? "..." : "Send Multiple Zap Requests"}
+            </button>
+            <button class={GREEN_BUTTON} onClick={handleKeysend}>
+              {loading() ? "..." : "Send Keysend Request"}
+            </button>
+            <button class={GREEN_BUTTON} onClick={handleMultiKeysend}>
+              {loading() ? "..." : "Send Multiple Keysend Requests"}
+            </button>
+          </div>
         </Match>
       </Switch>
     </div>
@@ -270,20 +271,23 @@ export function NWC() {
         <Zapper nwc={nwcResult.result!} />
       </Match>
       <Match when={nwcResult.error}>
-        <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
+        <div class="flex flex-col items-center gap-2">
           <pre class="overflow-x-auto whitespace-pre-line break-all p-4 bg-white/10 rounded-lg">
             {nwcResult.error!.message}
           </pre>
         </div>
       </Match>
       <Match when={true}>
-        <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
-          <label for="address">NWC</label>
-          <textarea
-            rows="4"
-            name="nwc"
-            placeholder="nostr+walletconnect://..."
-          />
+        <Form class="flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="nwc" class="field-label">Nostr Wallet Connect string</label>
+            <textarea
+              rows="4"
+              id="nwc"
+              name="nwc"
+              placeholder="nostr+walletconnect://..."
+            />
+          </div>
           <input
             type="submit"
             disabled={nwcResult.pending}

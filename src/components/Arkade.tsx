@@ -2,8 +2,7 @@ import { Match, Show, Switch, createSignal } from "solid-js";
 import { createRouteAction } from "solid-start";
 import { api } from "~/api/client";
 
-const SIMPLE_BUTTON =
-  "mt-4 px-4 py-2 rounded-xl text-xl font-semibold bg-black text-white border border-white";
+const SIMPLE_BUTTON = "btn-secondary mt-2";
 
 const RAILS: Record<string, string> = {
   ark: "Arkade",
@@ -20,7 +19,7 @@ const txLink = (r: { rail: string; txid?: string }) =>
 
 function Result(props: { result: any; error: any }) {
   return (
-    <div class="rounded-xl p-4 flex flex-col items-center gap-2 bg-[rgba(0,0,0,0.5)] drop-shadow-blue-glow">
+    <div class="flex flex-col items-center gap-2 text-center">
       <Switch>
         <Match when={props.result}>
           <p>
@@ -70,25 +69,29 @@ export function Arkade() {
   });
 
   return (
-    <div class="border border-white/50 rounded-xl p-4 w-full gap-2 flex flex-col">
-      <h2 class="font-bold text-xl font-mono">Send with Arkade</h2>
-      <Switch>
-        <Match when={sendResult.result || sendResult.error}>
-          <Result result={sendResult.result} error={sendResult.error} />
-        </Match>
-        <Match when={true}>
-          <Form class="rounded-xl p-4 flex flex-col gap-2 bg-[rgba(0,0,0,0.5)] w-full drop-shadow-blue-glow">
-            <label for="how_much">How much? (sats; an invoice's own amount is used if lower)</label>
-            <input type="number" name="how_much" min={1} placeholder="sats" value={amount()}
-              onInput={(e) => setAmount(e.currentTarget.value)} />
-            <label for="destination">Destination</label>
-            <input type="text" name="destination" placeholder="tark1…, tb1…, lntbs…, user@domain, bitcoin:…" />
-            <input type="submit" disabled={sendResult.pending}
-              value={sendResult.pending ? "..." : "Send"}
-              class="mt-4 p-4 rounded-xl text-xl font-semibold bg-[#1EA67F] text-white disabled:bg-gray-500" />
-          </Form>
-        </Match>
-      </Switch>
-    </div>
+    <Switch>
+      <Match when={sendResult.result || sendResult.error}>
+        <Result result={sendResult.result} error={sendResult.error} />
+      </Match>
+      <Match when={true}>
+        <Form class="flex flex-col gap-4">
+          <div class="grid sm:grid-cols-[12rem_1fr] gap-4">
+            <div class="flex flex-col gap-2">
+              <label for="ark_how_much" class="field-label">Amount (sats)</label>
+              <input type="number" id="ark_how_much" name="how_much" min={1} placeholder="sats" value={amount()}
+                onInput={(e) => setAmount(e.currentTarget.value)} />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="destination" class="field-label">Destination</label>
+              <input type="text" id="destination" name="destination" placeholder="tark1…, tb1…, lntbs…, user@domain, bitcoin:…" />
+            </div>
+          </div>
+          <p class="text-xs text-white/50 -mt-2">An invoice's own amount is used if it is lower.</p>
+          <input type="submit" disabled={sendResult.pending}
+            value={sendResult.pending ? "..." : "Send with Arkade"}
+            class="btn-primary" />
+        </Form>
+      </Match>
+    </Switch>
   );
 }
