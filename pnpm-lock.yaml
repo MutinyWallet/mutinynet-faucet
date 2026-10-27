@@ -5,8 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  axios: ^0.33.0
-  undici: ^6.28.1
+  axios: ^0.34.0
+  postcss-selector-parser: ^6.1.5
+  undici: ^6.29.1
 
 importers:
 
@@ -31,8 +32,8 @@ importers:
         specifier: ^0.2.32
         version: 0.2.32(@solidjs/meta@0.28.7(solid-js@1.9.17))(@solidjs/router@0.8.4(solid-js@1.9.17))(solid-js@1.9.17)(solid-start-node@0.2.32)(supports-color@7.2.0)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
       undici:
-        specifier: ^6.28.1
-        version: 6.29.0
+        specifier: ^6.29.1
+        version: 6.29.1
     devDependencies:
       '@types/qrcode':
         specifier: ^1.5.6
@@ -45,7 +46,7 @@ importers:
         version: 8.5.29
       solid-start-node:
         specifier: ^0.2.32
-        version: 0.2.32(solid-start@0.2.32)(supports-color@7.2.0)(undici@6.29.0)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
+        version: 0.2.32(solid-start@0.2.32)(supports-color@7.2.0)(undici@6.29.1)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
       tailwindcss:
         specifier: ^3.4.19
         version: 3.4.19
@@ -1240,8 +1241,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@0.33.0:
-    resolution: {integrity: sha512-juz19g7B3UWT9r3+tgRFQf2Bdy6IKDVroiyuVOUrkILVKHpqHL++K1l8ybvfdEP9B/VE72vk8vllbnedVCm/og==}
+  axios@0.34.0:
+    resolution: {integrity: sha512-CkOmqy7BaT4VC9+wRUmSM3LVwCkKK3UYc7koEqIHWRpOTJypwdNctaVOgnOjhHP3599Ubq2K8KqYwfC7c8NdPQ==}
 
   babel-plugin-jsx-dom-expressions@0.40.11:
     resolution: {integrity: sha512-k7TkOv7uVYnrq/bYyVvG5cWOC9IObAGfmyW3aMkG8l2sq2qt/5THkUBja69PMLEGGi8G+fXB2Fh7eS4OwZRBoQ==}
@@ -2675,8 +2676,8 @@ packages:
     peerDependencies:
       postcss: ^8.2.14
 
-  postcss-selector-parser@6.1.4:
-    resolution: {integrity: sha512-bIoJLOmjCO1S9XdY/DcnR5hJxvrDir1PbGChrzXG3vw0/FOliy/fA3dmdhQ441kah4gKv+TwckGzex6wNS5cnQ==}
+  postcss-selector-parser@6.1.5:
+    resolution: {integrity: sha512-TEHFzb5KRDKaOgJ4TYE+0jyJtFbjLvkdVOu0fZ2b6MTWzoqZd4Le+61aEppWkvTlYePgOX4ATL1wsAIPMLTw6Q==}
     engines: {node: '>=4'}
 
   postcss-value-parser@4.2.0:
@@ -2956,7 +2957,7 @@ packages:
     resolution: {integrity: sha512-IG7V5O7rdesVPQQ15eDpdJ9wg1XXFT7zpd+o0M7ShW9TvxPxs0g5RJzZFNjSxwx8nmxVj58mO5lGw2Jr/HgLCQ==}
     peerDependencies:
       solid-start: '*'
-      undici: ^6.28.1
+      undici: ^6.29.1
       vite: '*'
 
   solid-start@0.2.32:
@@ -3217,8 +3218,8 @@ packages:
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
-  undici@6.29.0:
-    resolution: {integrity: sha512-R+RODBqp6i2pPflGdq+xIOUkl+RNfGgHwoinecKu/JCuf2uO06cOKoDbI2P7Dn6KcswdKwrczbU6IYJ6K8X+wg==}
+  undici@6.29.1:
+    resolution: {integrity: sha512-EvRlUt/QqAEvXdQeRMYUfwOQsfzpDztykrG2owGEE/rBOBoYv9uF39ZzsNDh4lTFHhTr2XOZjKkYgueD12ZmGA==}
     engines: {node: '>=18.17'}
 
   unicode-canonical-property-names-ecmascript@2.0.1:
@@ -4706,7 +4707,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@0.33.0(debug@4.4.3(supports-color@7.2.0)):
+  axios@0.34.0(debug@4.4.3(supports-color@7.2.0)):
     dependencies:
       follow-redirects: 1.16.1(debug@4.4.3(supports-color@7.2.0))
       form-data: 4.0.6
@@ -6277,9 +6278,9 @@ snapshots:
   postcss-nested@6.2.0(postcss@8.5.29):
     dependencies:
       postcss: 8.5.29
-      postcss-selector-parser: 6.1.4
+      postcss-selector-parser: 6.1.5
 
-  postcss-selector-parser@6.1.4:
+  postcss-selector-parser@6.1.5:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
@@ -6579,7 +6580,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  solid-start-node@0.2.32(solid-start@0.2.32)(supports-color@7.2.0)(undici@6.29.0)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2)):
+  solid-start-node@0.2.32(solid-start@0.2.32)(supports-color@7.2.0)(undici@6.29.1)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2)):
     dependencies:
       '@rollup/plugin-commonjs': 24.1.0(rollup@3.30.0)
       '@rollup/plugin-json': 6.1.0(rollup@3.30.0)
@@ -6590,7 +6591,7 @@ snapshots:
       sirv: 2.0.4
       solid-start: 0.2.32(@solidjs/meta@0.28.7(solid-js@1.9.17))(@solidjs/router@0.8.4(solid-js@1.9.17))(solid-js@1.9.17)(solid-start-node@0.2.32)(supports-color@7.2.0)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
       terser: 5.51.2
-      undici: 6.29.0
+      undici: 6.29.1
       vite: 4.5.14(@types/node@26.6.4)(terser@5.51.2)
     transitivePeerDependencies:
       - supports-color
@@ -6628,13 +6629,13 @@ snapshots:
       sirv: 2.0.4
       solid-js: 1.9.17
       terser: 5.51.2
-      undici: 6.29.0
+      undici: 6.29.1
       vite: 4.5.14(@types/node@26.6.4)(terser@5.51.2)
       vite-plugin-inspect: 0.7.42(rollup@3.30.0)(supports-color@7.2.0)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
       vite-plugin-solid: 2.11.14(solid-js@1.9.17)(supports-color@7.2.0)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
       wait-on: 6.0.1(debug@4.4.3(supports-color@7.2.0))
     optionalDependencies:
-      solid-start-node: 0.2.32(solid-start@0.2.32)(supports-color@7.2.0)(undici@6.29.0)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
+      solid-start-node: 0.2.32(solid-start@0.2.32)(supports-color@7.2.0)(undici@6.29.1)(vite@4.5.14(@types/node@26.6.4)(terser@5.51.2))
     transitivePeerDependencies:
       - '@nuxt/kit'
       - '@testing-library/jest-dom'
@@ -6772,7 +6773,7 @@ snapshots:
       postcss-js: 4.1.0(postcss@8.5.29)
       postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.29)
       postcss-nested: 6.2.0(postcss@8.5.29)
-      postcss-selector-parser: 6.1.4
+      postcss-selector-parser: 6.1.5
       resolve: 1.22.13
       sucrase: 3.35.1
     transitivePeerDependencies:
@@ -6902,7 +6903,7 @@ snapshots:
 
   undici-types@8.9.0: {}
 
-  undici@6.29.0: {}
+  undici@6.29.1: {}
 
   unicode-canonical-property-names-ecmascript@2.0.1: {}
 
@@ -6988,7 +6989,7 @@ snapshots:
 
   wait-on@6.0.1(debug@4.4.3(supports-color@7.2.0)):
     dependencies:
-      axios: 0.33.0(debug@4.4.3(supports-color@7.2.0))
+      axios: 0.34.0(debug@4.4.3(supports-color@7.2.0))
       joi: 17.13.8
       lodash: 4.18.1
       minimist: 1.2.8

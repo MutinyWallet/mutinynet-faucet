@@ -22,7 +22,7 @@
     "qrcode": "^1.5.4",
     "solid-js": "^1.9.17",
     "solid-start": "^0.2.32",
-    "undici": "^6.29.0"
+    "undici": "^6.29.1"
   },
   "engines": {
     "node": ">=18.17"
