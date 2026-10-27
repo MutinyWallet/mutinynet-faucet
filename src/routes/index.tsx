@@ -149,7 +149,7 @@ export default function Home() {
           <Logo class="w-20 h-20 sm:w-24 sm:h-24 text-white drop-shadow-[0_0_40px_rgba(30,80,200,0.6)]" />
           <h1 class="font-mono text-5xl sm:text-6xl font-bold tracking-tight">mutinynet</h1>
           <p class="text-lg text-white/70 max-w-md">
-            A signet with 30-second blocks. Free coins, Lightning, Fedimint, Cashu and Ark for testing your
+            A signet with 30-second blocks. Free coins, Lightning, Fedimint, Cashu and Arkade for testing your
             bitcoin app.
           </p>
 
